@@ -27,8 +27,8 @@ public class SqMaxTest {
 
     @Test
     public void forthIsMax() {
-        int result = SqMax.max(1, 4, 3, 5);
-        assertThat(result, is(5));
+        int result = SqMax.max(0, 2, 5, 7);
+        assertThat(result, is(7));
     }
 
     @Test
