@@ -24,7 +24,28 @@ public class FindLoopTest {
         int value = 7;
         int result = find.indexOf(input, value);
         int expected = -1;
-        assertThat(result,is(expected));
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void whenFind3() {
+        int[] input = new int[]{5, 2, 10, 2, 4};
+        int value = 2;
+        int start = 2;
+        int finish = 4;
+        int result = FindLoop.indexOf(input, value, start, finish);
+        int expect = 3;
+        assertThat(result, is(expect));
+    }
+
+    @Test
+    public void whenElementDoesntExist() {
+        int[] input = new int[]{4, 5, 2, 6, 64, 2, 7, 4, 5};
+        int value = 6;
+        int start = 4;
+        int finish = 5;
+        int result = FindLoop.indexOf(input, value, start, finish);
+        assertThat(result, is(-1));
     }
 
 }
