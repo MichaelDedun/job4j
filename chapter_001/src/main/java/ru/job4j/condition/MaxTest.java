@@ -14,13 +14,13 @@ public class MaxTest {
     }
 
     @Test
-    public void WhenLeftEqualsRightOrRightEqualsLeft() {
+    public void whenLeftEqualsRightOrRightEqualsLeft() {
         int result = Max.max(2, 2);
         assertThat(result, is(2));
     }
 
     @Test
-    public void WhenLeftLessThanRight() {
+    public void whenLeftLessThanRight() {
         int result = Max.max(3, 2);
         assertThat(result, is(3));
 

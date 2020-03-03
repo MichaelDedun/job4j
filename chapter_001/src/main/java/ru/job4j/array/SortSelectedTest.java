@@ -16,7 +16,7 @@ public class SortSelectedTest {
     }
 
     @Test
-    public void SortWhenArrayHasThreeElements() {
+    public void sortWhenArrayHasThreeElements() {
         int[] input = new int[]{3, 2, 2};
         int[] result = SortSelected.sort(input);
         int[] expect = new int[]{2, 2, 3};
@@ -24,7 +24,7 @@ public class SortSelectedTest {
     }
 
     @Test
-    public void SortWhenArrayHasFiveElements() {
+    public void sortWhenArrayHasFiveElements() {
         int[] input = new int[]{Integer.MAX_VALUE, -1, 0, 2, 3};
         int[] result = SortSelected.sort(input);
         int[] expect = new int[]{-1, 0, 2, 3, Integer.MAX_VALUE};

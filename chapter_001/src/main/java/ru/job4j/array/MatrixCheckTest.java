@@ -92,7 +92,7 @@ public class MatrixCheckTest {
     }
 
     @Test
-    public void MyTest() {
+    public void myTest() {
         char[][] input = {
                 {' ', ' ', ' ', 'X', ' '},
                 {' ', ' ', ' ', ' ', 'X'},

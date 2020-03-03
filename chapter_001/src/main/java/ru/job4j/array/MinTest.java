@@ -11,7 +11,7 @@ public class MinTest {
     public void whenFirstMin() {
         assertThat(
                 Min.findMin(
-                        new int[] {0, 5, 10}
+                        new int[]{0, 5, 10}
                 ),
                 is(0)
         );
@@ -21,7 +21,7 @@ public class MinTest {
     public void whenLastMin() {
         assertThat(
                 Min.findMin(
-                        new int[] {10, 5, 3}
+                        new int[]{10, 5, 3}
                 ),
                 is(3)
         );
@@ -31,7 +31,7 @@ public class MinTest {
     public void whenMiddleMin() {
         assertThat(
                 Min.findMin(
-                        new int[] {10, 2, 5}
+                        new int[]{10, 2, 5}
                 ),
                 is(2)
         );

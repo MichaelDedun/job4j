@@ -15,9 +15,9 @@ public class ArrayDefinition {
         names[2] = "Andrei Hincu";
         names[3] = "Rail Shamsemuhametov";
 
-        for (String name : names)
+        for (String name : names) {
             System.out.println(name);
-
+        }
     }
 
 }
