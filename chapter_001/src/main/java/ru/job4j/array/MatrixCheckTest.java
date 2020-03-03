@@ -19,6 +19,17 @@ public class MatrixCheckTest {
     }
 
     @Test
+    public void whenHasMonoHorizontalasd() {
+        char[][] input = {
+                {' ', 0, 0},
+                {' ', ' ', ' '},
+                {' ', ' ', ' '},
+        };
+        boolean result = MatrixCheck.monoHorizontal(input, 1);
+        assertThat(result, is(true));
+    }
+
+    @Test
     public void whenHasMonoVertical() {
         char[][] input = {
                 {' ', ' ', 'X'},
