@@ -34,44 +34,13 @@ public class MatrixCheck {
 
     public static boolean isWin(char[][] board) {
         boolean result = false;
-        if (!isWith(board)) {
-            return false;
-        }
+        char[] diagonal = extractDiagonal(board);
         for (int i = 0; i < board.length; i++) {
-            if ((checkHorizontal(board, i, 'X') && monoHorizontal(board, i)) || (checkVertical(board, i, 'X') && monoVertical(board, i))) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
-    public static boolean isWith(char[][] board) {
-        for (int i = 0; i < board.length; i++) {
-            if (board[i][i] == 'X') {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean checkHorizontal(char[][] board, int row, char symbol) {
-        boolean result = false;
-        for (int i = 0; i < board.length; i++) {
-            if (board[row][i] == symbol) {
-                result = true;
-                break;
-            }
-        }
-        return result;
-    }
-
-    public static boolean checkVertical(char[][] board, int column, char symbol) {
-        boolean result = false;
-        for (int i = 0; i < board.length; i++) {
-            if (board[i][column] == symbol) {
-                result = true;
-                break;
+            if (diagonal[i] == 'X') {
+                if (monoHorizontal(board, i) || monoVertical(board, i)) {
+                    result = true;
+                    break;
+                }
             }
         }
         return result;
