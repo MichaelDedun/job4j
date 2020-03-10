@@ -26,4 +26,16 @@ public class MaxTest {
 
     }
 
+    @Test
+    public void testWithThreeVariable() {
+        int result = Max.max(4, 5, 4);
+        assertThat(result, is(5));
+    }
+
+    @Test
+    public void testWithFourVariable() {
+        int result = Max.max(5, 3, 9, 6);
+        assertThat(result, is(9));
+    }
+
 }
