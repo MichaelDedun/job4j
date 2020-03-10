@@ -9,7 +9,13 @@ public class TriangleTest {
 
     @Test
     public void whenExist() {
-        boolean result = Triangle.exist(2.0, 2.0, 2.0);
+        Point a = new Point(0, 0);
+        Point b = new Point(0, 2);
+        Point c = new Point(2, 0);
+        double ab = a.distance(b);
+        double ac = a.distance(c);
+        double bc = b.distance(c);
+        boolean result = Triangle.exist(ab, ac, bc);
         assertThat(result, is(true));
     }
 
