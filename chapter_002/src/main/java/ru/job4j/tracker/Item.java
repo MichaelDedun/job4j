@@ -3,7 +3,6 @@ package ru.job4j.tracker;
 public class Item {
 
     public Item() {
-        super();
         System.out.println("load item");
     }
 

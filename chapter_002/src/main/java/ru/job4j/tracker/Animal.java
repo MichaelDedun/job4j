@@ -6,4 +6,5 @@ public class Animal {
         super();
         System.out.println("Animal");
     }
+
 }
