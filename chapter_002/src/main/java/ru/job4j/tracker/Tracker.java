@@ -44,6 +44,14 @@ public class Tracker {
         return findById(item.getId()) != null;
     }
 
+    public boolean delete(String id) {
+        int index = indexOf(id);
+        System.arraycopy(this.items, index + 1, this.items, index, this.position - index);
+        this.items[position - 1] = null;
+        this.position--;
+        return findById(id) == null;
+    }
+
     private String generateId() {
         Random rm = new Random();
         return String.valueOf(rm.nextLong() + System.currentTimeMillis());
