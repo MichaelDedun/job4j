@@ -20,12 +20,11 @@ public class Tracker {
     }
 
     public Item[] findByName(String key) {
-        Item[] listApplications = Arrays.copyOf(this.items, this.position);
-        Item[] result = new Item[listApplications.length];
+        Item[] result = Arrays.copyOf(this.items, this.position);
         int size = 0;
-        for (int i = 0; i < listApplications.length; i++) {
-            if (listApplications[i].getName().equals(key)) {
-                result[i] = listApplications[i];
+        for (int i = 0; i < result.length; i++) {
+            if (result[i].getName().equals(key)) {
+                result[i] = result[i];
                 size++;
             }
         }
@@ -34,8 +33,8 @@ public class Tracker {
     }
 
     public Item findById(String id) {
-        Item[] listApplications = Arrays.copyOf(this.items, this.position);
-        for (Item el : listApplications) {
+        this.items = Arrays.copyOf(this.items, this.position);
+        for (Item el : this.items) {
             if (el.getId().equals(id)) {
                 return el;
             }
