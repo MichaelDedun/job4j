@@ -16,5 +16,5 @@ public class Bus implements Transport {
     public int fillUp(int quality) {
         return quality * 46;
     }
-    
+
 }
