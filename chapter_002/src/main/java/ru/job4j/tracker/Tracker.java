@@ -50,11 +50,16 @@ public class Tracker {
     }
 
     public boolean delete(String id) {
-        int index = indexOf(id);
-        System.arraycopy(this.items, index + 1, this.items, index, this.position - index);
-        this.items[position - 1] = null;
-        this.position--;
-        return findById(id) == null;
+        boolean result = true;
+        if (indexOf(id) == -1) {
+            result = false;
+        } else {
+            int index = indexOf(id);
+            System.arraycopy(this.items, index + 1, this.items, index, this.position - index);
+            this.items[position - 1] = null;
+            this.position--;
+        }
+        return result;
     }
 
     private String generateId() {
