@@ -20,11 +20,11 @@ public class Tracker {
     }
 
     public Item[] findByName(String key) {
-        Item[] result = Arrays.copyOf(this.items, this.position);
+        Item[] result = new Item[this.position];
         int size = 0;
         for (int i = 0; i < result.length; i++) {
-            if (result[i].getName().equals(key)) {
-                result[i] = result[i];
+            if (this.items[i].getName().equals(key)) {
+                result[i] = this.items[i];
                 size++;
             }
         }
