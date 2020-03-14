@@ -41,10 +41,11 @@ public class Tracker {
         boolean result = true;
         if (indexOf(id) == -1) {
             result = false;
+        } else {
+            int index = indexOf(id);
+            item.setId(this.items[index].getId());
+            this.items[index] = item;
         }
-        int index = indexOf(id);
-        item.setId(this.items[index].getId());
-        this.items[index] = item;
         return result;
     }
 
