@@ -38,10 +38,14 @@ public class Tracker {
     }
 
     public boolean replace(String id, Item item) {
+        boolean result = true;
+        if (indexOf(id) == -1) {
+            result = false;
+        }
         int index = indexOf(id);
         item.setId(this.items[index].getId());
         this.items[index] = item;
-        return findById(item.getId()) != null;
+        return result;
     }
 
     public boolean delete(String id) {
