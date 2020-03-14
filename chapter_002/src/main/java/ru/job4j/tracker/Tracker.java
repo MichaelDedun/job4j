@@ -42,9 +42,8 @@ public class Tracker {
         if (indexOf(id) == -1) {
             result = false;
         } else {
-            int index = indexOf(id);
-            item.setId(this.items[index].getId());
-            this.items[index] = item;
+            item.setId(this.items[indexOf(id)].getId());
+            this.items[indexOf(id)] = item;
         }
         return result;
     }
@@ -54,8 +53,7 @@ public class Tracker {
         if (indexOf(id) == -1) {
             result = false;
         } else {
-            int index = indexOf(id);
-            System.arraycopy(this.items, index + 1, this.items, index, this.position - index);
+            System.arraycopy(this.items, indexOf(id) + 1, this.items, indexOf(id), this.position - indexOf(id));
             this.items[position - 1] = null;
             this.position--;
         }

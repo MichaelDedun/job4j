@@ -23,7 +23,6 @@ public class StartUI {
         String name = input.askStr("Введите новое имя: ");
         Item newItem = new Item(name);
         if (tracker.replace(id, newItem)) {
-            tracker.replace(id, newItem);
             System.out.println("Успешно");
         } else {
             System.out.println("Такого айди не существует");
@@ -34,7 +33,6 @@ public class StartUI {
         System.out.println("=== Delete Item ====");
         String id = input.askStr("Введите айди: ");
         if (tracker.delete(id)) {
-            tracker.delete(id);
             System.out.println("Успешно");
         } else {
             System.out.println("Такого айди не существует");
