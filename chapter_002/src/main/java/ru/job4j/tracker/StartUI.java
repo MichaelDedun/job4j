@@ -26,10 +26,10 @@ public class StartUI {
                 System.out.println("=== Edit Item ====");
                 System.out.println("Введите айди: ");
                 String id = scanner.nextLine();
-                if (tracker.findById(id) != null) {
-                    System.out.println("Введите новое имя: ");
-                    String name = scanner.nextLine();
-                    Item newItem = new Item(name);
+                System.out.println("Введите новое имя: ");
+                String name = scanner.nextLine();
+                Item newItem = new Item(name);
+                if (tracker.replace(id, newItem)) {
                     tracker.replace(id, newItem);
                     System.out.println("Успешно");
                 } else {
@@ -39,7 +39,7 @@ public class StartUI {
                 System.out.println("=== Delete Item ====");
                 System.out.println("Введите айди: ");
                 String id = scanner.nextLine();
-                if (tracker.findById(id) != null) {
+                if (tracker.delete(id)) {
                     tracker.delete(id);
                     System.out.println("Успешно");
                 } else {
