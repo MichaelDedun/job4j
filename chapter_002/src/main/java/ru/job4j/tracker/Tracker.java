@@ -39,21 +39,23 @@ public class Tracker {
 
     public boolean replace(String id, Item item) {
         boolean result = true;
-        if (indexOf(id) == -1) {
+        int index = indexOf(id);
+        if (index == -1) {
             result = false;
         } else {
-            item.setId(this.items[indexOf(id)].getId());
-            this.items[indexOf(id)] = item;
+            item.setId(this.items[index].getId());
+            this.items[index] = item;
         }
         return result;
     }
 
     public boolean delete(String id) {
         boolean result = true;
-        if (indexOf(id) == -1) {
+        int index = indexOf(id);
+        if (index == -1) {
             result = false;
         } else {
-            System.arraycopy(this.items, indexOf(id) + 1, this.items, indexOf(id), this.position - indexOf(id));
+            System.arraycopy(this.items, index + 1, this.items, index, this.position - index);
             this.items[position - 1] = null;
             this.position--;
         }
