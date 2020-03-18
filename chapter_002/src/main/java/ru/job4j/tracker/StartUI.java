@@ -42,7 +42,13 @@ public class StartUI {
     public static void findById(Input input, Tracker tracker) {
         System.out.println("=== Find Item by id ====");
         String id = input.askStr("Введите айди: ");
-        System.out.println("Имя: " + tracker.findById(id).getName() + " Айди: " + tracker.findById(id).getId());
+        Item item = tracker.findById(id);
+        if (item != null) {
+            System.out.println("Имя: " + item.getName() + " Айди: " + item.getId());
+        } else {
+            System.out.println("Айди не существует");
+        }
+
     }
 
     public static void findByName(Input input, Tracker tracker) {
