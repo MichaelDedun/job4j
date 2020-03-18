@@ -17,7 +17,7 @@ public class StartUI {
         }
     }
 
-    public static void editItem(Input input, Tracker tracker) {
+    public static void replaceItem(Input input, Tracker tracker) {
         System.out.println("=== Edit Item ====");
         String id = input.askStr("Введите айди: ");
         String name = input.askStr("Введите новое имя: ");
@@ -65,7 +65,7 @@ public class StartUI {
             } else if (select == 1) {
                 StartUI.showAll(tracker);
             } else if (select == 2) {
-                StartUI.editItem(input, tracker);
+                StartUI.replaceItem(input, tracker);
             } else if (select == 3) {
                 StartUI.deleteItem(input, tracker);
             } else if (select == 4) {

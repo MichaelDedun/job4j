@@ -23,12 +23,11 @@ public class Matches {
     }
 
     private static int matches = 11;
-    private static Player[] players;
 
     public static void main(String[] args) {
         int select, current = 0;
-        players = initPlayers(2);
-        Player lastPlayer = players[0];
+        Player[] players = initPlayers(2);
+        Player lastPlayer = players[current];
         while (!isFinished()) {
             do {
                 System.out.println(players[current].getName() + " , возьмите количество спичек от 1 до 3");
