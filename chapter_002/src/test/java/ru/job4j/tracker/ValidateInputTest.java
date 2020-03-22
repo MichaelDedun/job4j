@@ -30,6 +30,7 @@ public class ValidateInputTest {
         ByteArrayOutputStream mem = new ByteArrayOutputStream();
         PrintStream out = System.out;
         System.setOut(out);
+        System.setOut(new PrintStream(mem));
         String[] data = {"ddg0", "0", "1"};
         ValidateInput input = new ValidateStubInput(data);
         input.askInt("0", data.length);
