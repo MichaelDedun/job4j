@@ -11,16 +11,21 @@ public class PhoneDictionary {
 
     /**
      * Вернуть список всех пользователей, который содержат key в любых полях.
+     *
      * @param key Ключ поиска.
      * @return Список подощедщих пользователей.
      */
     public ArrayList<Person> find(String key) {
         ArrayList<Person> result = new ArrayList<>();
         for (Person person : persons) {
-            if (person.getSurname().equals(key) || person.getAddress().equals(key) || person.getName().equals(key) || person.getPhone().equals(key)) {
+            if (person.getSurname().equals(key)
+                    || person.getAddress().equals(key)
+                    || person.getName().equals(key)
+                    || person.getPhone().equals(key)) {
                 result.add(person);
             }
         }
         return result;
     }
+    
 }
