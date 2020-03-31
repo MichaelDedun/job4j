@@ -15,5 +15,5 @@ public class LicenseTest {
         second.setCode("audio");
         assertThat(first, is(second));
     }
-    
+
 }
