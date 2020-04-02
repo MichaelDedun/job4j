@@ -36,8 +36,7 @@ public class Account {
             return false;
         }
         Account account = (Account) o;
-        return Double.compare(account.getBalance(), getBalance()) == 0
-                && Objects.equals(getRequisite(), account.getRequisite());
+        return Objects.equals(getRequisite(), account.getRequisite());
     }
 
     @Override
