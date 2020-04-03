@@ -78,5 +78,5 @@ public class StringCompareTest {
         );
         assertThat(rst, greaterThan(0));
     }
-    
+
 }
