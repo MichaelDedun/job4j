@@ -3,11 +3,11 @@ package ru.job4j.collection;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -16,21 +16,32 @@ public class JobTest {
     @Test
     public void whenDescComparatorByNameAndPriority() {
         Comparator<Job> cmpNamePriority = new JobDescByName().thenComparing(new JobDescByPriority());
-        int rsl = cmpNamePriority.compare(
-                new Job("Impl task", 0),
-                new Job("Fix bug", 1)
+        List<Job> input = Arrays.asList(
+                new Job("asd", 1),
+                new Job("bsd", 0)
         );
-        assertThat(rsl, lessThan(0));
+        Collections.sort(input, cmpNamePriority);
+        List<Job> output = Arrays.asList(
+                new Job("bsd", 0),
+                new Job("asd", 1)
+
+        );
+        assertThat(input, is(output));
     }
 
     @Test
     public void whenIncComparatorByNameAndPriority() {
         Comparator<Job> cmpNamePriority = new JobIncByName().thenComparing(new JobIncByPriority());
-        int rsl = cmpNamePriority.compare(
-                new Job("Impl task", 1),
-                new Job("Fix bug", 0)
+        List<Job> input = Arrays.asList(
+                new Job("bsd", 1),
+                new Job("asd", 0)
         );
-        assertThat(rsl, greaterThan(0));
+        Collections.sort(input, cmpNamePriority);
+        List<Job> output = Arrays.asList(
+                new Job("asd", 0),
+                new Job("bsd", 1)
+        );
+        assertThat(input, is(output));
     }
 
     @Test
