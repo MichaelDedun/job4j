@@ -17,13 +17,15 @@ public class JobTest {
     public void whenDescComparatorByNameAndPriority() {
         Comparator<Job> cmpNamePriority = new JobDescByName().thenComparing(new JobDescByPriority());
         List<Job> input = Arrays.asList(
-                new Job("asd", 1),
-                new Job("bsd", 0)
+                new Job("asd", 0),
+                new Job("asd", 3),
+                new Job("asd", 1)
         );
         Collections.sort(input, cmpNamePriority);
         List<Job> output = Arrays.asList(
-                new Job("bsd", 0),
-                new Job("asd", 1)
+                new Job("asd", 3),
+                new Job("asd", 1),
+                new Job("asd", 0)
 
         );
         assertThat(input, is(output));
@@ -33,13 +35,15 @@ public class JobTest {
     public void whenIncComparatorByNameAndPriority() {
         Comparator<Job> cmpNamePriority = new JobIncByName().thenComparing(new JobIncByPriority());
         List<Job> input = Arrays.asList(
-                new Job("bsd", 1),
-                new Job("asd", 0)
+                new Job("asd", 1),
+                new Job("asd", 2),
+                new Job("asd", 3)
         );
         Collections.sort(input, cmpNamePriority);
         List<Job> output = Arrays.asList(
-                new Job("asd", 0),
-                new Job("bsd", 1)
+                new Job("asd", 1),
+                new Job("asd", 2),
+                new Job("asd", 3)
         );
         assertThat(input, is(output));
     }
