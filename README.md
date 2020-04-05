@@ -1,5 +1,2 @@
-job4j temo
-
-Я начал курс job4j в 2020 году.
-
-"Объединение зафиксированных изменений"
+[![Build Status](https://travis-ci.org/MichaelDedun/job4j.svg?branch=master)](https://travis-ci.org/MichaelDedun/job4j)
+[![codecov](https://codecov.io/gh/MichaelDedun/job4j/branch/master/graph/badge.svg)](https://codecov.io/gh/MichaelDedun/job4j)
