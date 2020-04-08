@@ -23,4 +23,21 @@ public class ProfilesTest {
         Assert.assertEquals(result, expected);
     }
 
+    @Test
+    public void testProfileSortedAndHaveUniq() {
+        Profiles profiles = new Profiles();
+        List<Profile> profilesList = Arrays.asList(
+                new Profile(new Address("Omsk", "ordzhonikidze", 83, 70)),
+                new Profile(new Address("Omsk", "ordzhonikidze", 83, 70)),
+                new Profile(new Address("Moscow", "pobeda", 74, 28))
+        );
+        List<Address> result = profiles.collect(profilesList);
+        List<Address> expected = Arrays.asList(
+                new Address("Moscow", "pobeda", 74, 28),
+                new Address("Omsk", "ordzhonikidze", 83, 70)
+
+        );
+        Assert.assertEquals(result, expected);
+    }
+
 }
