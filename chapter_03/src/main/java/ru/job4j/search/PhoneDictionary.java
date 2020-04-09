@@ -18,10 +18,10 @@ public class PhoneDictionary {
      * @return Список подощедщих пользователей.
      */
     public ArrayList<Person> find(String key) {
-        Predicate<Person> byName = person -> person.getName() != null;
-        Predicate<Person> bySurname = person -> person.getSurname() != null;
-        Predicate<Person> byPhone = person -> person.getPhone() != null;
-        Predicate<Person> byAddress = person -> person.getAddress() != null;
+        Predicate<Person> byName = person -> person.getName().equals(key);
+        Predicate<Person> bySurname = person -> person.getSurname().equals(key);
+        Predicate<Person> byPhone = person -> person.getPhone().equals(key);
+        Predicate<Person> byAddress = person -> person.getAddress().equals(key);
         Predicate<Person> combine = byName.or(bySurname).or(byPhone).or(byAddress);
         ArrayList<Person> result = new ArrayList<>();
         for (Person person : persons) {
