@@ -3,10 +3,16 @@ package ru.job4j.lambda;
 import java.util.Objects;
 
 public class Student {
-    int score;
+    private int score;
+    private String surname;
 
     public Student(int score) {
         this.score = score;
+    }
+
+    public Student(int score, String surname) {
+        this.score = score;
+        this.surname = surname;
     }
 
     public int getScore() {
@@ -15,6 +21,14 @@ public class Student {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     @Override
@@ -26,18 +40,22 @@ public class Student {
             return false;
         }
         Student student = (Student) o;
-        return score == student.score;
+        return score == student.score
+                && Objects.equals(surname, student.surname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(score);
+        return Objects.hash(score, surname);
     }
 
     @Override
     public String toString() {
         return "Student{"
                 + "score=" + score
+                + ", surname='" + surname
+                + '\''
                 + '}';
     }
+
 }
