@@ -25,9 +25,11 @@ public class Departments {
     }
 
     public static void sortAsc(List<String> orgs) {
+        orgs.sort(Comparator.naturalOrder());
     }
 
     public static void sortDesc(List<String> orgs) {
+        orgs.sort(new DepDescComp());
     }
 
 }
