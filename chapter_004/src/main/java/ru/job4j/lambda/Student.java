@@ -2,7 +2,7 @@ package ru.job4j.lambda;
 
 import java.util.Objects;
 
-public class Student {
+public class Student implements Comparable<Student> {
     private int score;
     private String surname;
 
@@ -56,6 +56,12 @@ public class Student {
                 + ", surname='" + surname
                 + '\''
                 + '}';
+    }
+
+
+    @Override
+    public int compareTo(Student o) {
+        return Integer.compare(o.getScore(), score);
     }
 
 }

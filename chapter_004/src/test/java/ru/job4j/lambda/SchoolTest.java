@@ -86,4 +86,23 @@ public class SchoolTest {
         Assert.assertEquals(expected, result);
     }
 
+    @Test
+    public void testLevel() {
+        School school = new School();
+        List<Student> students = Arrays.asList(
+                new Student(50, "Sorokin"),
+                new Student(54, "Petrov"),
+                new Student(42, "Sidorov"),
+                new Student(4, "Sidorov")
+        );
+        List<Student> expected = Arrays.asList(
+                new Student(54, "Petrov"),
+                new Student(50, "Sorokin"),
+                new Student(42, "Sidorov")
+        );
+        List<Student> result = school.levelOf(students, 40);
+        Assert.assertEquals(expected, result);
+
+    }
+
 }
