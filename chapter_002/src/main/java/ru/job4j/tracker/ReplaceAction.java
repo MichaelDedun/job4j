@@ -8,11 +8,11 @@ public class ReplaceAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
+    public boolean execute(Input input, MemTracker memTracker) {
         String id = input.askStr("Введите айди: ");
         String name = input.askStr("Введите новое имя: ");
         Item newItem = new Item(name);
-        if (tracker.replace(id, newItem)) {
+        if (memTracker.replace(id, newItem)) {
             System.out.println("Успешно");
         } else {
             System.out.println("Такого айди не существует");
