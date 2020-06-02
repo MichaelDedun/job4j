@@ -3,5 +3,5 @@ CREATE TABLE item (
     name VARCHAR(30) NOT NULL
 );
 
-INSERT INTO item (name) VALUES (?);
+INSERT INTO item (name) VALUES ('test');
 

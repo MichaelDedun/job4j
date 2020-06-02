@@ -8,9 +8,9 @@ public class FindByIdAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
+    public boolean execute(Input input, Store sqlTracker) {
         String id = input.askStr("Введите айди: ");
-        Item item = memTracker.findById(id);
+        Item item = sqlTracker.findById(id);
         if (item != null) {
             System.out.println("Имя: " + item.getName() + " Айди: " + item.getId());
         } else {

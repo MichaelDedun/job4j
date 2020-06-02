@@ -7,9 +7,9 @@ public class DeleteAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
+    public boolean execute(Input input, Store sqlTracker) {
         String id = input.askStr("Введите айди: ");
-        if (memTracker.delete(id)) {
+        if (sqlTracker.delete(id)) {
             System.out.println("Успешно");
         } else {
             System.out.println("Такого айди не существует");

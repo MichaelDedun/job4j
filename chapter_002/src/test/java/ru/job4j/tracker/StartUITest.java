@@ -4,9 +4,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.StringJoiner;
 
 import static org.hamcrest.core.Is.is;
@@ -16,55 +14,63 @@ import static org.junit.Assert.assertThat;
 public class StartUITest {
 
     @Test
-    public void whenAddItem() {
+    public void whenAddItem() throws Exception {
         String[] answers = {"Fix PC"};
         Input input = new StubInput(answers);
-        MemTracker memTracker = new MemTracker();
+        Store sqlTracker = new SqlTracker();
+        sqlTracker.init();
         CreateAction createAction = new CreateAction();
-        createAction.execute(input, memTracker);
-        Item created = memTracker.findAll().get(0);
+        createAction.execute(input, sqlTracker);
+        Item created = sqlTracker.findByName("Fix PC").get(0);
         Item expected = new Item("Fix PC");
+        sqlTracker.close();
         assertThat(created.getName(), is(expected.getName()));
     }
 
     @Test
-    public void createItem() {
-        MemTracker memTracker = new MemTracker();
+    public void createItem() throws Exception {
+        Store sqlTracker = new SqlTracker();
+        sqlTracker.init();
         String[] name = {"Testname"};
         Input input = new StubInput(name);
         CreateAction createAction = new CreateAction();
-        createAction.execute(input, memTracker);
-        assertThat(name[0], is(memTracker.findAll().get(0).getName()));
+        createAction.execute(input, sqlTracker);
+        assertThat(name[0], is(sqlTracker.findByName("Testname").get(0).getName()));
+        sqlTracker.close();
     }
 
     @Test
-    public void whenReplaceItem() {
-        MemTracker memTracker = new MemTracker();
+    public void whenReplaceItem() throws Exception {
+        Store sqlTracker = new SqlTracker();
+        sqlTracker.init();
         Item item = new Item("new item");
-        memTracker.add(item);
+        sqlTracker.add(item);
         String[] answers = {
                 item.getId(), // id сохраненной заявки в объект tracker.
                 "replaced item"
         };
         ReplaceAction replaceAction = new ReplaceAction();
-        replaceAction.execute(new StubInput(answers), memTracker);
-        Item replaced = memTracker.findById(item.getId());
+        replaceAction.execute(new StubInput(answers), sqlTracker);
+        Item replaced = sqlTracker.findById(item.getId());
+        sqlTracker.close();
         assertThat(replaced.getName(), is("replaced item"));
     }
 
     @Test
-    public void whenDeleteItem() {
-        MemTracker memTracker = new MemTracker();
+    public void whenDeleteItem() throws Exception {
+        Store sqlTracker = new SqlTracker();
+        sqlTracker.init();
         Item item = new Item("Test");
-        memTracker.add(item);
+        sqlTracker.add(item);
         String[] id = {item.getId()};
         DeleteAction deleteAction = new DeleteAction();
-        deleteAction.execute(new StubInput(id), memTracker);
-        assertNull(memTracker.findById(item.getId()));
+        deleteAction.execute(new StubInput(id), sqlTracker);
+        assertNull(sqlTracker.findById(item.getId()));
+        sqlTracker.close();
     }
 
     @Test
-    public void whenPrtMenu() {
+    public void whenPrtMenu() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
@@ -72,8 +78,7 @@ public class StartUITest {
                 new String[]{"0"}
         );
         StubAction action = new StubAction();
-        List<UserAction> actions = new ArrayList<>();
-        new StartUI().init(input, new MemTracker(), Arrays.asList(new UserAction[]{action}));
+        new StartUI().init(input, new SqlTracker(), Arrays.asList(new UserAction[]{action}));
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add("Menu.")
                 .add("0. Stub action")
@@ -83,12 +88,12 @@ public class StartUITest {
     }
 
     @Test
-    public void whenExit() {
+    public void whenExit() throws Exception {
         StubInput input = new StubInput(
                 new String[]{"0"}
         );
         StubAction action = new StubAction();
-        new StartUI().init(input, new MemTracker(), Arrays.asList(new UserAction[]{action}));
+        new StartUI().init(input, new SqlTracker(), Arrays.asList(new UserAction[]{action}));
         assertThat(action.isCall(), is(true));
     }
 
@@ -97,11 +102,11 @@ public class StartUITest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
-        MemTracker memTracker = new MemTracker();
+        Store sqlTracker = new SqlTracker();
         Item item = new Item("fix bug");
-        memTracker.add(item);
+        sqlTracker.add(item);
         FindAllAction act = new FindAllAction();
-        act.execute(new StubInput(new String[] {}), memTracker);
+        act.execute(new StubInput(new String[]{}), sqlTracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add("=== Show all Item's ====")
                 .add("Имя:" + item.getName() + " Айди: " + item.getId())
@@ -115,11 +120,11 @@ public class StartUITest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
-        MemTracker memTracker = new MemTracker();
+        Store sqlTracker = new SqlTracker();
         Item item = new Item("fix bug");
-        memTracker.add(item);
+        sqlTracker.add(item);
         FindByNameAction act = new FindByNameAction();
-        act.execute(new StubInput(new String[] {"fix bug"}), memTracker);
+        act.execute(new StubInput(new String[]{"fix bug"}), sqlTracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add("Имя: " + item.getName() + "Айди: " + item.getId())
                 .toString();

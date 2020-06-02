@@ -10,11 +10,11 @@ public class FindByNameAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, MemTracker memTracker) {
+    public boolean execute(Input input, Store sqlTracker) {
         String name = input.askStr("Введите новое имя: ");
-        List<Item> result = memTracker.findByName(name);
+        List<Item> result = sqlTracker.findByName(name);
         for (Item el : result) {
-            System.out.println("Имя: " + el.getName() + "Айди: " + el.getId());
+            System.out.println("Имя: " + el.getName() + " Айди: " + el.getId());
         }
         return true;
     }

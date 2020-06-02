@@ -4,6 +4,6 @@ public interface UserAction {
 
     String name();
 
-    boolean execute(Input input, MemTracker memTracker);
+    boolean execute(Input input, Store sqlTracker) throws Exception;
 
 }
