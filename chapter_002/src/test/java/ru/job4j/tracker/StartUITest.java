@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.StringJoiner;
 
@@ -13,60 +16,84 @@ import static org.junit.Assert.assertThat;
 
 public class StartUITest {
 
+//    public Connection init() {
+//        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("./chapter_002/src/main/resources/app.properties")) {
+//            Properties config = new Properties();
+//            config.load(in);
+//            Class.forName(config.getProperty("driver-class-name"));
+//            return DriverManager.getConnection(
+//                    config.getProperty("url"),
+//                    config.getProperty("username"),
+//                    config.getProperty("password")
+//
+//            );
+//        } catch (Exception e) {
+//            throw new IllegalStateException(e);
+//        }
+//    }
+
+    private Connection init() {
+        try {
+            String url = "jdbc:postgresql://localhost:5432/tracker";
+            String username = "postgres";
+            String password = "123321";
+            return DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Test
     public void whenAddItem() throws Exception {
         String[] answers = {"Fix PC"};
         Input input = new StubInput(answers);
-        Store sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        CreateAction createAction = new CreateAction();
-        createAction.execute(input, sqlTracker);
-        Item created = sqlTracker.findByName("Fix PC").get(0);
-        Item expected = new Item("Fix PC");
-        sqlTracker.close();
-        assertThat(created.getName(), is(expected.getName()));
+        try (SqlTracker sqlTracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
+            CreateAction createAction = new CreateAction();
+            createAction.execute(input, sqlTracker);
+            Item created = sqlTracker.findByName("Fix PC").get(0);
+            Item expected = new Item("Fix PC");
+            assertThat(created.getName(), is(expected.getName()));
+        }
     }
 
     @Test
     public void createItem() throws Exception {
-        Store sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        String[] name = {"Testname"};
-        Input input = new StubInput(name);
-        CreateAction createAction = new CreateAction();
-        createAction.execute(input, sqlTracker);
-        assertThat(name[0], is(sqlTracker.findByName("Testname").get(0).getName()));
-        sqlTracker.close();
+        try (SqlTracker sqlTracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
+            String[] name = {"Testname"};
+            Input input = new StubInput(name);
+            CreateAction createAction = new CreateAction();
+            createAction.execute(input, sqlTracker);
+            assertThat(name[0], is(sqlTracker.findByName("Testname").get(0).getName()));
+        }
     }
 
     @Test
     public void whenReplaceItem() throws Exception {
-        Store sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        Item item = new Item("new item");
-        sqlTracker.add(item);
-        String[] answers = {
-                item.getId(), // id сохраненной заявки в объект tracker.
-                "replaced item"
-        };
-        ReplaceAction replaceAction = new ReplaceAction();
-        replaceAction.execute(new StubInput(answers), sqlTracker);
-        Item replaced = sqlTracker.findById(item.getId());
-        sqlTracker.close();
-        assertThat(replaced.getName(), is("replaced item"));
+        try (SqlTracker sqlTracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
+            Item item = new Item("new item");
+            sqlTracker.add(item);
+            String[] answers = {
+                    item.getId(), // id сохраненной заявки в объект tracker.
+                    "replaced item"
+            };
+            ReplaceAction replaceAction = new ReplaceAction();
+            replaceAction.execute(new StubInput(answers), sqlTracker);
+            Item replaced = sqlTracker.findById(item.getId());
+            assertThat(replaced.getName(), is("replaced item"));
+        }
     }
 
     @Test
     public void whenDeleteItem() throws Exception {
-        Store sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        Item item = new Item("Test");
-        sqlTracker.add(item);
-        String[] id = {item.getId()};
-        DeleteAction deleteAction = new DeleteAction();
-        deleteAction.execute(new StubInput(id), sqlTracker);
-        assertNull(sqlTracker.findById(item.getId()));
-        sqlTracker.close();
+        try (SqlTracker sqlTracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
+            Item item = new Item("Test");
+            sqlTracker.add(item);
+            String[] id = {item.getId()};
+            DeleteAction deleteAction = new DeleteAction();
+            deleteAction.execute(new StubInput(id), sqlTracker);
+            assertNull(sqlTracker.findById(item.getId()));
+        }
     }
 
     @Test
@@ -102,19 +129,18 @@ public class StartUITest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
-        Store sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        Item item = new Item("fix bug");
-        sqlTracker.add(item);
-        FindAllAction act = new FindAllAction();
-        act.execute(new StubInput(new String[]{}), sqlTracker);
-        String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                .add("=== Show all Item's ====")
-                .add("Имя:" + item.getName() + " Айди: " + item.getId())
-                .toString();
-        sqlTracker.close();
-        assertThat(new String(out.toByteArray()), is(expect));
-        System.setOut(def);
+        try (SqlTracker sqlTracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
+            Item item = new Item("fix bug");
+            sqlTracker.add(item);
+            FindAllAction act = new FindAllAction();
+            act.execute(new StubInput(new String[]{}), sqlTracker);
+            String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                    .add("=== Show all Item's ====")
+                    .add("Имя:" + item.getName() + " Айди: " + item.getId())
+                    .toString();
+            assertThat(new String(out.toByteArray()), is(expect));
+            System.setOut(def);
+        }
     }
 
     @Test
@@ -122,18 +148,17 @@ public class StartUITest {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
-        Store sqlTracker = new SqlTracker();
-        sqlTracker.init();
-        Item item = new Item("fix bug");
-        sqlTracker.add(item);
-        FindByNameAction act = new FindByNameAction();
-        act.execute(new StubInput(new String[]{"fix bug"}), sqlTracker);
-        String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                .add("Имя: " + item.getName() + " Айди: " + item.getId())
-                .toString();
-        sqlTracker.close();
-        assertThat(new String(out.toByteArray()), is(expect));
-        System.setOut(def);
+        try (SqlTracker sqlTracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
+            Item item = new Item("fix bug");
+            sqlTracker.add(item);
+            FindByNameAction act = new FindByNameAction();
+            act.execute(new StubInput(new String[]{"fix bug"}), sqlTracker);
+            String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                    .add("Имя: " + item.getName() + " Айди: " + item.getId())
+                    .toString();
+            assertThat(new String(out.toByteArray()), is(expect));
+            System.setOut(def);
+        }
     }
 
 }

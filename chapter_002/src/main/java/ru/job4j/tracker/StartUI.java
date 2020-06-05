@@ -25,21 +25,6 @@ public class StartUI {
         }
     }
 
-    //    public static void main(String[] args) {
-//        Input input = new ConsoleInput();
-//        Input validate = new ValidateInput(input);
-//        MemTracker memTracker = new MemTracker();
-//        List<UserAction> actions = new ArrayList<>();
-//        actions.add(new CreateAction());
-//        actions.add(new FindAllAction());
-//        actions.add(new ReplaceAction());
-//        actions.add(new DeleteAction());
-//        actions.add(new FindByIdAction());
-//        actions.add(new FindByNameAction());
-//        actions.add(new ExitAction());
-//
-//        new StartUI().init(validate, memTracker, actions);
-//    }
     public static void main(String[] args) {
         Input validate = new ValidateInput(
                 new ConsoleInput()
