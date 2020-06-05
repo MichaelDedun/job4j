@@ -23,8 +23,13 @@ public class SqlTracker implements Store {
     public Item add(Item item) {
         try (final PreparedStatement statement = this.connection.prepareStatement("INSERT INTO item (name) VALUES (?)", Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, item.getName());
-            statement.execute();
-            return item;
+            statement.executeUpdate();
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    item.setId(resultSet.getString(1));
+                }
+                return item;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -34,7 +39,9 @@ public class SqlTracker implements Store {
     @Override
     public boolean replace(String id, Item item) {
         boolean result = true;
-        try (final PreparedStatement statement = this.connection.prepareStatement("UPDATE item SET name = \'" + item.getName() + "\'" + "WHERE id = \'" + id + "\'")) {
+        try (final PreparedStatement statement = this.connection.prepareStatement("UPDATE item SET name = ? WHERE id = ?")) {
+            statement.setString(1, item.getName());
+            statement.setInt(2, Integer.parseInt(id));
             result = checkQuery(statement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,7 +53,8 @@ public class SqlTracker implements Store {
     @Override
     public boolean delete(String id) {
         boolean result = true;
-        try (final PreparedStatement statement = this.connection.prepareStatement("DELETE FROM item WHERE id = \'" + id + "\'")) {
+        try (final PreparedStatement statement = this.connection.prepareStatement("DELETE FROM item WHERE id = ?")) {
+            statement.setInt(1, Integer.parseInt(id));
             result = checkQuery(statement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,8 +67,9 @@ public class SqlTracker implements Store {
     public List<Item> findAll() {
         List<Item> result = new ArrayList<>();
         try (final PreparedStatement statement = this.connection.prepareStatement("select * FROM item")) {
-            ResultSet resultSet = statement.executeQuery();
-            createResultList(resultSet, result);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                createResultList(resultSet, result);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -71,9 +80,11 @@ public class SqlTracker implements Store {
     @Override
     public List<Item> findByName(String key) {
         List<Item> result = new ArrayList<>();
-        try (final PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM item WHERE name = \'" + key + "\'")) {
-            ResultSet resultSet = statement.executeQuery();
-            createResultList(resultSet, result);
+        try (final PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM item WHERE name = ?")) {
+            statement.setString(1, key);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                createResultList(resultSet, result);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,14 +93,16 @@ public class SqlTracker implements Store {
 
     @Override
     public Item findById(String id) {
-        try (final PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM item WHERE id = " + id + ";")) {
-            ResultSet resultSet = statement.executeQuery();
+        try (final PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM item WHERE id = ?")) {
+            statement.setInt(1, Integer.parseInt(id));
             Item result = null;
-            while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                Item item = new Item(name);
-                item.setId(id);
-                result = item;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String name = resultSet.getString("name");
+                    Item item = new Item(name);
+                    item.setId(id);
+                    result = item;
+                }
             }
             return result;
         } catch (SQLException e) {

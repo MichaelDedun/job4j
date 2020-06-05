@@ -98,11 +98,12 @@ public class StartUITest {
     }
 
     @Test
-    public void whenCheckOutput() {
+    public void whenCheckOutput() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
         Store sqlTracker = new SqlTracker();
+        sqlTracker.init();
         Item item = new Item("fix bug");
         sqlTracker.add(item);
         FindAllAction act = new FindAllAction();
@@ -111,23 +112,26 @@ public class StartUITest {
                 .add("=== Show all Item's ====")
                 .add("Имя:" + item.getName() + " Айди: " + item.getId())
                 .toString();
+        sqlTracker.close();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(def);
     }
 
     @Test
-    public void findByNameExecute() {
+    public void findByNameExecute() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
         Store sqlTracker = new SqlTracker();
+        sqlTracker.init();
         Item item = new Item("fix bug");
         sqlTracker.add(item);
         FindByNameAction act = new FindByNameAction();
         act.execute(new StubInput(new String[]{"fix bug"}), sqlTracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
-                .add("Имя: " + item.getName() + "Айди: " + item.getId())
+                .add("Имя: " + item.getName() + " Айди: " + item.getId())
                 .toString();
+        sqlTracker.close();
         assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(def);
     }
