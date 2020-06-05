@@ -6,6 +6,12 @@ jdk:
 # используем режим обычного пользователя для сборки проекта.
 sudo: false
 
+services:
+  - postgresql
+
+before_install:
+  - psql -c 'create database tracker;' -U postgres
+
 env:
   global:
     - CODECOV_TOKEN="2c90c2f1-a9c1-466f-9361-834214f5ca95"
