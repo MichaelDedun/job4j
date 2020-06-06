@@ -1,8 +1,10 @@
 package ru.job4j.tracker;
 
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class SqlTracker implements Store {
     private Connection connection;
@@ -16,13 +18,17 @@ public class SqlTracker implements Store {
 
     @Override
     public void init() {
-        try {
-            String url = "jdbc:postgresql://localhost:5432/tracker";
-            String username = "postgres";
-            String password = "123321";
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
+            Properties config = new Properties();
+            config.load(in);
+            Class.forName(config.getProperty("driver-class-name"));
+            connection = DriverManager.getConnection(
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
     }
 
