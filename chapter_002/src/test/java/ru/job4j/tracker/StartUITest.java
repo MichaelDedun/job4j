@@ -3,11 +3,13 @@ package ru.job4j.tracker;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Properties;
 import java.util.StringJoiner;
 
 import static org.hamcrest.core.Is.is;
@@ -16,32 +18,20 @@ import static org.junit.Assert.assertThat;
 
 public class StartUITest {
 
-//    public Connection init() {
-//        try (InputStream in = TrackerSQL.class.getClassLoader().getResourceAsStream("./chapter_002/src/main/resources/app.properties")) {
-//            Properties config = new Properties();
-//            config.load(in);
-//            Class.forName(config.getProperty("driver-class-name"));
-//            return DriverManager.getConnection(
-//                    config.getProperty("url"),
-//                    config.getProperty("username"),
-//                    config.getProperty("password")
-//
-//            );
-//        } catch (Exception e) {
-//            throw new IllegalStateException(e);
-//        }
-//    }
+    public Connection init() {
+        try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
+            Properties config = new Properties();
+            config.load(in);
+            Class.forName(config.getProperty("driver-class-name"));
+            return DriverManager.getConnection(
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
 
-    private Connection init() {
-        try {
-            String url = "jdbc:postgresql://localhost:5432/tracker";
-            String username = "postgres";
-            String password = "123321";
-            return DriverManager.getConnection(url, username, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
-        return null;
     }
 
     @Test
