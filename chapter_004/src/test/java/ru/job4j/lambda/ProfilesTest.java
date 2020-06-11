@@ -17,8 +17,9 @@ public class ProfilesTest {
         );
         List<Address> result = profiles.collect(profilesList);
         List<Address> expected = Arrays.asList(
-                new Address("Omsk", "ordzhonikidze", 83, 70),
-                new Address("Moscow", "pobeda", 74, 28)
+                new Address("Moscow", "pobeda", 74, 28),
+                new Address("Omsk", "ordzhonikidze", 83, 70)
+
         );
         Assert.assertEquals(result, expected);
     }
