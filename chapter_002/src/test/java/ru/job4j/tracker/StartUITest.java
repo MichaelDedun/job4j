@@ -62,7 +62,7 @@ public class StartUITest {
             Item item = new Item("new item");
             sqlTracker.add(item);
             String[] answers = {
-                    item.getId(), // id сохраненной заявки в объект tracker.
+                    String.valueOf(item.getId()), // id сохраненной заявки в объект tracker.
                     "replaced item"
             };
             ReplaceAction replaceAction = new ReplaceAction();
@@ -77,7 +77,7 @@ public class StartUITest {
         try (SqlTracker sqlTracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
             Item item = new Item("Test");
             sqlTracker.add(item);
-            String[] id = {item.getId()};
+            String[] id = {String.valueOf(item.getId())};
             DeleteAction deleteAction = new DeleteAction();
             deleteAction.execute(new StubInput(id), sqlTracker);
             assertNull(sqlTracker.findById(item.getId()));
