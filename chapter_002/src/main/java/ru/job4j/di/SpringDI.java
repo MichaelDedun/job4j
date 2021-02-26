@@ -8,8 +8,12 @@ public class SpringDI {
         context.scan("ru.job4j");
         context.refresh();
         StartUI ui = context.getBean(StartUI.class);
+        StartUI ui1 = context.getBean(StartUI.class);
         ui.add("Petr Arsentev");
+        ui1.add("Misha Arsentev");
         ui.add("Ivan ivanov");
+        ui1.add("Vova ivanov");
         ui.print();
+        ui1.print();
     }
 }
